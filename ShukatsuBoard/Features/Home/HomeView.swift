@@ -45,6 +45,16 @@ struct HomeView: View {
                 }
             }
             .navigationTitle("Shukatsu Board")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    NavigationLink {
+                        SettingsView()
+                    } label: {
+                        Image(systemName: "gearshape")
+                    }
+                    .accessibilityLabel("設定")
+                }
+            }
         }
     }
 }

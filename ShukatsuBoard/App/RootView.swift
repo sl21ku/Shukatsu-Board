@@ -27,11 +27,6 @@ struct RootView: View {
                 .tabItem {
                     Label("タスク", systemImage: "calendar")
                 }
-
-            SettingsView()
-                .tabItem {
-                    Label("設定", systemImage: "gearshape")
-                }
         }
     }
 }

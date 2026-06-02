@@ -24,7 +24,9 @@ final class ShukatsuBoardUITests: XCTestCase {
         app.tabBars.buttons["タスク"].tap()
         XCTAssertTrue(app.navigationBars["タスク"].waitForExistence(timeout: 5))
 
-        app.tabBars.buttons["設定"].tap()
+        app.tabBars.buttons["ホーム"].tap()
+        XCTAssertTrue(app.navigationBars["Shukatsu Board"].waitForExistence(timeout: 5))
+        app.buttons["設定"].tap()
         XCTAssertTrue(app.navigationBars["設定"].waitForExistence(timeout: 5))
     }
 
