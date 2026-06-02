@@ -18,6 +18,11 @@ struct RootView: View {
                     Label("追加", systemImage: "plus.circle")
                 }
 
+            ComparisonView()
+                .tabItem {
+                    Label("比較", systemImage: "tablecells")
+                }
+
             TaskListView()
                 .tabItem {
                     Label("タスク", systemImage: "calendar")

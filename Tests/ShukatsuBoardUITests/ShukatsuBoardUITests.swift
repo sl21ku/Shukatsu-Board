@@ -1,0 +1,47 @@
+import XCTest
+
+final class ShukatsuBoardUITests: XCTestCase {
+    override func setUpWithError() throws {
+        continueAfterFailure = false
+    }
+
+    func testMainTabsLaunchAndNavigate() throws {
+        let app = XCUIApplication()
+        app.launchEnvironment["UI_TESTING"] = "1"
+        app.launch()
+
+        XCTAssertTrue(app.navigationBars["Shukatsu Board"].waitForExistence(timeout: 10))
+
+        app.tabBars.buttons["企業"].tap()
+        XCTAssertTrue(app.navigationBars["企業"].waitForExistence(timeout: 5))
+
+        app.tabBars.buttons["追加"].tap()
+        XCTAssertTrue(app.navigationBars["クイック追加"].waitForExistence(timeout: 5))
+
+        app.tabBars.buttons["比較"].tap()
+        XCTAssertTrue(app.navigationBars["比較"].waitForExistence(timeout: 5))
+
+        app.tabBars.buttons["タスク"].tap()
+        XCTAssertTrue(app.navigationBars["タスク"].waitForExistence(timeout: 5))
+
+        app.tabBars.buttons["設定"].tap()
+        XCTAssertTrue(app.navigationBars["設定"].waitForExistence(timeout: 5))
+    }
+
+    func testQuickAddAcceptsText() throws {
+        let app = XCUIApplication()
+        app.launchEnvironment["UI_TESTING"] = "1"
+        app.launch()
+
+        app.tabBars.buttons["追加"].tap()
+        XCTAssertTrue(app.navigationBars["クイック追加"].waitForExistence(timeout: 5))
+
+        let textView = app.textViews.firstMatch
+        XCTAssertTrue(textView.waitForExistence(timeout: 5))
+        textView.tap()
+        textView.typeText("サンプル株式会社\n勤務地：東京\n給与：月給250000円")
+
+        app.buttons["解析する"].tap()
+        XCTAssertTrue(app.staticTexts["候補"].waitForExistence(timeout: 5))
+    }
+}

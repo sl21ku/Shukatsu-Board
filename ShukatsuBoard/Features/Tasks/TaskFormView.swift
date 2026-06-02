@@ -16,6 +16,7 @@ struct TaskFormView: View {
     @State private var dueAt: Date
     @State private var hasReminderAt: Bool
     @State private var reminderAt: Date
+    @State private var shouldAddToCalendar: Bool
     @State private var isCompleted: Bool
     @State private var note: String
     @State private var errorMessage: String?
@@ -31,6 +32,7 @@ struct TaskFormView: View {
         _dueAt = State(initialValue: task?.dueAt ?? .now)
         _hasReminderAt = State(initialValue: task?.reminderAt != nil)
         _reminderAt = State(initialValue: task?.reminderAt ?? .now)
+        _shouldAddToCalendar = State(initialValue: false)
         _isCompleted = State(initialValue: task?.isCompleted ?? false)
         _note = State(initialValue: task?.note ?? "")
     }
@@ -69,6 +71,9 @@ struct TaskFormView: View {
                 if hasReminderAt {
                     DatePicker("通知", selection: $reminderAt, displayedComponents: [.date, .hourAndMinute])
                 }
+
+                Toggle("カレンダーに追加", isOn: $shouldAddToCalendar)
+                    .disabled(!hasDueAt)
             }
 
             Section("メモ") {
@@ -114,6 +119,7 @@ struct TaskFormView: View {
             task.note = note.nilIfEmpty
             task.touch()
             scheduleNotificationIfNeeded(for: task)
+            addToCalendarIfNeeded(task)
         } else {
             let newTask = TaskItem(
                 company: selectedCompany,
@@ -127,6 +133,7 @@ struct TaskFormView: View {
             modelContext.insert(newTask)
             selectedCompany?.touch()
             scheduleNotificationIfNeeded(for: newTask)
+            addToCalendarIfNeeded(newTask)
         }
 
         dismiss()
@@ -142,6 +149,22 @@ struct TaskFormView: View {
             do {
                 _ = try await NotificationService.shared.requestAuthorization()
                 try await NotificationService.shared.scheduleReminder(for: task)
+            } catch {
+                await MainActor.run {
+                    errorMessage = error.localizedDescription
+                }
+            }
+        }
+    }
+
+    private func addToCalendarIfNeeded(_ task: TaskItem) {
+        guard shouldAddToCalendar else {
+            return
+        }
+
+        Task {
+            do {
+                try await CalendarService.shared.addEvent(for: task)
             } catch {
                 await MainActor.run {
                     errorMessage = error.localizedDescription

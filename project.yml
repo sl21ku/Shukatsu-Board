@@ -70,6 +70,17 @@ targets:
     dependencies:
       - target: ShukatsuBoard
 
+  ShukatsuBoardUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - Tests/ShukatsuBoardUITests
+    dependencies:
+      - target: ShukatsuBoard
+    settings:
+      base:
+        TEST_TARGET_NAME: ShukatsuBoard
+
 schemes:
   ShukatsuBoard:
     build:
@@ -77,8 +88,10 @@ schemes:
         ShukatsuBoard: all
         ShareExtension: all
         ShukatsuBoardTests: [test]
+        ShukatsuBoardUITests: [test]
     test:
       config: Debug
       gatherCoverageData: true
       targets:
         - name: ShukatsuBoardTests
+        - name: ShukatsuBoardUITests

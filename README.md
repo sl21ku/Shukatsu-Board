@@ -25,7 +25,11 @@ open ShukatsuBoard.xcodeproj
 - ローカル通知予約
 - コピペ文章のローカル解析
 - Share ExtensionからのURL/テキスト取り込み入口
+- スクショ画像からのOCR取り込み
+- カレンダーへの予定追加
+- 企業比較画面
 - デモデータ投入
+- GitHub ActionsでのSimulatorビルド、Unit Test、UI Test
 
 ## 方針
 
@@ -33,3 +37,39 @@ open ShukatsuBoard.xcodeproj
 - 外部サーバーへ就活情報を送信しない
 - 解析候補はユーザー確認後に保存する
 - 企業サイトへの自動ログインは行わない
+
+## Apple Developer Program有効化後の手順
+
+Apple Developer Programの購入処理が完了したら、以下を確認します。
+
+1. [Apple Developer Account](https://developer.apple.com/account) にログインする
+2. `Certificates, Identifiers & Profiles` に入れることを確認する
+3. [App Store Connect](https://appstoreconnect.apple.com/) の `Apps` に入れることを確認する
+
+次に、Developer Accountで以下を作成します。
+
+```text
+App ID:
+com.sl21ku.ShukatsuBoard
+
+Share Extension App ID:
+com.sl21ku.ShukatsuBoard.ShareExtension
+
+App Group:
+group.com.sl21ku.ShukatsuBoard
+```
+
+作成後、`project.yml` とentitlements内の仮IDを置き換えます。
+
+```text
+com.example.ShukatsuBoard
+-> com.sl21ku.ShukatsuBoard
+
+com.example.ShukatsuBoard.ShareExtension
+-> com.sl21ku.ShukatsuBoard.ShareExtension
+
+group.com.example.ShukatsuBoard
+-> group.com.sl21ku.ShukatsuBoard
+```
+
+その後、App Store Connectで新規アプリを作成し、Bundle IDに `com.sl21ku.ShukatsuBoard` を選択します。

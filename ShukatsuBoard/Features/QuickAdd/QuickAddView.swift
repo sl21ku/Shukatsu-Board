@@ -1,5 +1,6 @@
 import SwiftData
 import SwiftUI
+import PhotosUI
 
 struct QuickAddView: View {
     @Environment(\.modelContext) private var modelContext
@@ -8,6 +9,8 @@ struct QuickAddView: View {
 
     @State private var inputText = ""
     @State private var candidate: ParsedImportCandidate?
+    @State private var selectedPhotoItem: PhotosPickerItem?
+    @State private var isRunningOCR = false
     @State private var selectedCompanyId: UUID?
     @State private var shouldCreateTask = true
     @State private var shouldCreateJobPosting = true
@@ -17,6 +20,16 @@ struct QuickAddView: View {
     var body: some View {
         NavigationStack {
             List {
+                Section("スクショOCR") {
+                    PhotosPicker(selection: $selectedPhotoItem, matching: .images) {
+                        Label("画像から文字を読み取る", systemImage: "text.viewfinder")
+                    }
+
+                    if isRunningOCR {
+                        ProgressView("文字認識中")
+                    }
+                }
+
                 Section("取り込みテキスト") {
                     TextEditor(text: $inputText)
                         .frame(minHeight: 180)
@@ -74,6 +87,11 @@ struct QuickAddView: View {
                 }
             }
             .navigationTitle("クイック追加")
+            .onChange(of: selectedPhotoItem) { _, newItem in
+                Task {
+                    await runOCR(for: newItem)
+                }
+            }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
@@ -91,6 +109,34 @@ struct QuickAddView: View {
             } message: {
                 Text(alertMessage ?? "")
             }
+        }
+    }
+
+    @MainActor
+    private func runOCR(for item: PhotosPickerItem?) async {
+        guard let item else {
+            return
+        }
+
+        isRunningOCR = true
+        defer { isRunningOCR = false }
+
+        do {
+            guard
+                let data = try await item.loadTransferable(type: Data.self),
+                let image = UIImage(data: data)
+            else {
+                throw OCRServiceError.missingImageData
+            }
+
+            let recognizedText = try await OCRService.shared.recognizeText(in: image)
+            inputText = [inputText, recognizedText]
+                .filter { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+                .joined(separator: "\n")
+            candidate = ImportParserService.shared.parse(inputText)
+            selectedCompanyId = existingCompanyId(for: candidate?.companyName)
+        } catch {
+            alertMessage = error.localizedDescription
         }
     }
 

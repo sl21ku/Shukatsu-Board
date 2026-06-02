@@ -3,15 +3,12 @@ import SwiftUI
 
 @main
 struct ShukatsuBoardApp: App {
+    private let modelContainer = AppModelContainer.make()
+
     var body: some Scene {
         WindowGroup {
             RootView()
         }
-        .modelContainer(for: [
-            Company.self,
-            EntrySheet.self,
-            JobPosting.self,
-            TaskItem.self
-        ])
+        .modelContainer(modelContainer)
     }
 }

@@ -73,5 +73,6 @@ jobs:
             -project ShukatsuBoard.xcodeproj \
             -scheme ShukatsuBoard \
             -destination "${{ steps.simulator.outputs.destination }}" \
+            UI_TESTING=1 \
             CODE_SIGNING_ALLOWED=NO \
             test
