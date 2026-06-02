@@ -1,0 +1,7 @@
+*.swift text eol=lf
+*.yml text eol=lf
+*.plist text eol=lf
+*.entitlements text eol=lf
+*.xcprivacy text eol=lf
+*.md text eol=lf
+*.gitignore text eol=lf
