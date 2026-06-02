@@ -7,7 +7,7 @@ struct TaskRowView: View {
         HStack(alignment: .top, spacing: 12) {
             Image(systemName: task.type.iconName)
                 .frame(width: 24)
-                .foregroundStyle(task.isCompleted ? .secondary : .tint)
+                .foregroundStyle(task.isCompleted ? Color.secondary : Color.accentColor)
 
             VStack(alignment: .leading, spacing: 6) {
                 HStack {
