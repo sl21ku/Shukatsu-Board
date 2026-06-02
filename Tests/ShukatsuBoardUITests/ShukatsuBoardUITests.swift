@@ -28,20 +28,14 @@ final class ShukatsuBoardUITests: XCTestCase {
         XCTAssertTrue(app.navigationBars["設定"].waitForExistence(timeout: 5))
     }
 
-    func testQuickAddAcceptsText() throws {
+    func testQuickAddShowsImportControls() throws {
         let app = XCUIApplication()
         app.launchEnvironment["UI_TESTING"] = "1"
         app.launch()
 
         app.tabBars.buttons["追加"].tap()
         XCTAssertTrue(app.navigationBars["クイック追加"].waitForExistence(timeout: 5))
-
-        let textView = app.textViews.firstMatch
-        XCTAssertTrue(textView.waitForExistence(timeout: 5))
-        textView.tap()
-        textView.typeText("サンプル株式会社\n勤務地：東京\n給与：月給250000円")
-
-        app.buttons["解析する"].tap()
-        XCTAssertTrue(app.staticTexts["候補"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["解析する"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["画像から文字を読み取る"].waitForExistence(timeout: 5))
     }
 }
