@@ -69,3 +69,16 @@ targets:
       - Tests/ShukatsuBoardTests
     dependencies:
       - target: ShukatsuBoard
+
+schemes:
+  ShukatsuBoard:
+    build:
+      targets:
+        ShukatsuBoard: all
+        ShareExtension: all
+        ShukatsuBoardTests: [test]
+    test:
+      config: Debug
+      gatherCoverageData: true
+      targets:
+        - name: ShukatsuBoardTests

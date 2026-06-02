@@ -1,0 +1,77 @@
+name: iOS CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    name: Generate, Build, and Test
+    runs-on: macos-15
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Show Xcode environment
+        run: |
+          xcodebuild -version
+          xcrun simctl list runtimes
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode project
+        run: xcodegen generate
+
+      - name: Pick available iOS simulator
+        id: simulator
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          DEVICE="$(
+            xcrun simctl list devices available |
+            ruby -ne 'if $_ =~ /^\s+(iPhone [^(]+) \(/; name=$1.strip; if name.include?("Pro") || name =~ /iPhone 1[5-9]/; puts name; exit; end; end'
+          )"
+
+          if [ -z "$DEVICE" ]; then
+            DEVICE="$(
+              xcrun simctl list devices available |
+              ruby -ne 'if $_ =~ /^\s+(iPhone [^(]+) \(/; puts $1.strip; exit; end'
+            )"
+          fi
+
+          if [ -z "$DEVICE" ]; then
+            echo "No available iOS simulator device found."
+            xcrun simctl list devices available
+            exit 1
+          fi
+
+          DESTINATION="platform=iOS Simulator,name=${DEVICE}"
+          echo "Using ${DESTINATION}"
+          echo "destination=${DESTINATION}" >> "$GITHUB_OUTPUT"
+
+      - name: Build app for simulator
+        run: |
+          xcodebuild \
+            -project ShukatsuBoard.xcodeproj \
+            -scheme ShukatsuBoard \
+            -destination "${{ steps.simulator.outputs.destination }}" \
+            CODE_SIGNING_ALLOWED=NO \
+            build
+
+      - name: Run unit tests
+        run: |
+          xcodebuild \
+            -project ShukatsuBoard.xcodeproj \
+            -scheme ShukatsuBoard \
+            -destination "${{ steps.simulator.outputs.destination }}" \
+            CODE_SIGNING_ALLOWED=NO \
+            test
