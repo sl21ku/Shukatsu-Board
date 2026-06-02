@@ -17,6 +17,10 @@ open ShukatsuBoard.xcodeproj
 
 `project.yml` の `bundleIdPrefix`、App Group、署名チームは自分のApple Developer設定に合わせて変更してください。
 
+## 引き継ぎメモ
+
+今日までの実装状況、最新CI、次にやるべき作業は [HANDOFF.md](HANDOFF.md) にまとめています。
+
 ## MVP実装済みの範囲
 
 - SwiftUI / SwiftDataによる企業、ES、募集要項、タスク管理
