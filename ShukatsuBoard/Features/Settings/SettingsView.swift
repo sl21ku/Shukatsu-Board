@@ -18,6 +18,7 @@ struct SettingsView: View {
                     Label("コピー前にFace ID / Touch ID認証", systemImage: "faceid")
                     Label("企業サイトへの自動ログインなし", systemImage: "hand.raised")
                 }
+                .foregroundStyle(AppTheme.primary)
 
                 Section("通知") {
                     Button {

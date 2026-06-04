@@ -5,6 +5,17 @@ struct HomeView: View {
     @Query private var companies: [Company]
     @Query private var tasks: [TaskItem]
 
+    private var dueSoonTasks: [TaskItem] {
+        pendingTasks.filter { task in
+            guard let dueAt = task.dueAt else {
+                return false
+            }
+
+            let limit = Calendar.current.date(byAdding: .day, value: 7, to: .now) ?? .now
+            return dueAt <= limit
+        }
+    }
+
     private var pendingTasks: [TaskItem] {
         tasks
             .filter { !$0.isCompleted }
@@ -20,6 +31,22 @@ struct HomeView: View {
     var body: some View {
         NavigationStack {
             List {
+                Section {
+                    VStack(alignment: .leading, spacing: 14) {
+                        Text("今日の就活ボード")
+                            .font(.title3)
+                            .fontWeight(.bold)
+
+                        HStack(spacing: 10) {
+                            HomeMetricView(title: "選考中", value: "\(activeCompanies.count)", systemImage: "building.2")
+                            HomeMetricView(title: "未完了", value: "\(pendingTasks.count)", systemImage: "checklist")
+                            HomeMetricView(title: "7日以内", value: "\(dueSoonTasks.count)", systemImage: "clock")
+                        }
+                    }
+                    .padding(.vertical, 6)
+                }
+                .listRowBackground(AppTheme.softBackground)
+
                 Section("今日・直近の予定") {
                     if pendingTasks.isEmpty {
                         EmptyStateView(title: "未完了タスクはありません", systemImage: "checkmark.circle")
@@ -56,5 +83,31 @@ struct HomeView: View {
                 }
             }
         }
+    }
+}
+
+private struct HomeMetricView: View {
+    let title: String
+    let value: String
+    let systemImage: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Image(systemName: systemImage)
+                .font(.headline)
+                .foregroundStyle(AppTheme.teal)
+
+            Text(value)
+                .font(.title2)
+                .fontWeight(.bold)
+                .foregroundStyle(AppTheme.primary)
+
+            Text(title)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(12)
+        .background(.background, in: RoundedRectangle(cornerRadius: 8))
     }
 }

@@ -28,5 +28,6 @@ struct RootView: View {
                     Label("タスク", systemImage: "calendar")
                 }
         }
+        .tint(AppTheme.teal)
     }
 }

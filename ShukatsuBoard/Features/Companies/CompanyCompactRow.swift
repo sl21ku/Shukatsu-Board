@@ -18,9 +18,9 @@ struct CompanyCompactRow: View {
                 }
 
                 Label("志望度 \(company.priority)", systemImage: "star")
+                    .foregroundStyle(AppTheme.gold)
             }
             .font(.caption)
-            .foregroundStyle(.secondary)
         }
         .padding(.vertical, 4)
     }

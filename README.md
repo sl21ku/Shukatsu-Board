@@ -21,6 +21,12 @@ open ShukatsuBoard.xcodeproj
 
 今日までの実装状況、最新CI、次にやるべき作業は [HANDOFF.md](HANDOFF.md) にまとめています。
 
+## App Store提出準備
+
+- アプリアイコン: `ShukatsuBoard/Support/Assets.xcassets/AppIcon.appiconset`
+- プライバシーポリシー下書き: [docs/privacy-policy.md](docs/privacy-policy.md)
+- App Store文面下書き: [docs/app-store-metadata.md](docs/app-store-metadata.md)
+
 ## MVP実装済みの範囲
 
 - SwiftUI / SwiftDataによる企業、ES、募集要項、タスク管理
