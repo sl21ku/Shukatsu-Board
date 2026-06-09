@@ -13,3 +13,4 @@ build/
 *.p12
 *.pem
 *.mobileprovision
+base64_*.txt
