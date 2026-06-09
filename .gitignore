@@ -14,3 +14,4 @@ build/
 *.pem
 *.mobileprovision
 base64_*.txt
+*.p8
