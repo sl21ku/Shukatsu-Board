@@ -43,6 +43,12 @@ jobs:
         run: |
           sed -i '' -E "s/CURRENT_PROJECT_VERSION: \"[^\"]+\"/CURRENT_PROJECT_VERSION: \"$BUILD_NUMBER\"/g" project.yml
           grep 'CURRENT_PROJECT_VERSION' project.yml
+          /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $BUILD_NUMBER" ShukatsuBoard/Support/Info.plist
+          /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $BUILD_NUMBER" ShareExtension/Info.plist
+          echo "App Info.plist build number:"
+          /usr/libexec/PlistBuddy -c "Print :CFBundleVersion" ShukatsuBoard/Support/Info.plist
+          echo "Share Extension Info.plist build number:"
+          /usr/libexec/PlistBuddy -c "Print :CFBundleVersion" ShareExtension/Info.plist
 
       - name: Generate Xcode project
         run: xcodegen generate
@@ -125,12 +131,17 @@ jobs:
       - name: Verify archived build number
         run: |
           APP_PLIST="$RUNNER_TEMP/ShukatsuBoard.xcarchive/Products/Applications/ShukatsuBoard.app/Info.plist"
+          EXTENSION_PLIST="$RUNNER_TEMP/ShukatsuBoard.xcarchive/Products/Applications/ShukatsuBoard.app/PlugIns/ShareExtension.appex/Info.plist"
           echo "Archived marketing version:"
           /usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "$APP_PLIST"
           echo "Archived build number:"
           ARCHIVED_BUILD_NUMBER="$(/usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$APP_PLIST")"
           echo "$ARCHIVED_BUILD_NUMBER"
           test "$ARCHIVED_BUILD_NUMBER" = "$BUILD_NUMBER"
+          echo "Archived Share Extension build number:"
+          ARCHIVED_EXTENSION_BUILD_NUMBER="$(/usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$EXTENSION_PLIST")"
+          echo "$ARCHIVED_EXTENSION_BUILD_NUMBER"
+          test "$ARCHIVED_EXTENSION_BUILD_NUMBER" = "$BUILD_NUMBER"
 
       - name: Export IPA
         run: |
@@ -144,12 +155,17 @@ jobs:
         run: |
           unzip -q "$RUNNER_TEMP/export/ShukatsuBoard.ipa" -d "$RUNNER_TEMP/ipa"
           APP_PLIST="$RUNNER_TEMP/ipa/Payload/ShukatsuBoard.app/Info.plist"
+          EXTENSION_PLIST="$RUNNER_TEMP/ipa/Payload/ShukatsuBoard.app/PlugIns/ShareExtension.appex/Info.plist"
           echo "Exported marketing version:"
           /usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "$APP_PLIST"
           echo "Exported build number:"
           EXPORTED_BUILD_NUMBER="$(/usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$APP_PLIST")"
           echo "$EXPORTED_BUILD_NUMBER"
           test "$EXPORTED_BUILD_NUMBER" = "$BUILD_NUMBER"
+          echo "Exported Share Extension build number:"
+          EXPORTED_EXTENSION_BUILD_NUMBER="$(/usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$EXTENSION_PLIST")"
+          echo "$EXPORTED_EXTENSION_BUILD_NUMBER"
+          test "$EXPORTED_EXTENSION_BUILD_NUMBER" = "$BUILD_NUMBER"
 
       - name: Setup App Store Connect Private Key
         env:
