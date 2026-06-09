@@ -43,15 +43,18 @@ jobs:
         run: |
           sed -i '' -E "s/CURRENT_PROJECT_VERSION: \"[^\"]+\"/CURRENT_PROJECT_VERSION: \"$BUILD_NUMBER\"/g" project.yml
           grep 'CURRENT_PROJECT_VERSION' project.yml
+
+      - name: Generate Xcode project
+        run: xcodegen generate
+
+      - name: Update generated Info.plist build numbers
+        run: |
           /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $BUILD_NUMBER" ShukatsuBoard/Support/Info.plist
           /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $BUILD_NUMBER" ShareExtension/Info.plist
           echo "App Info.plist build number:"
           /usr/libexec/PlistBuddy -c "Print :CFBundleVersion" ShukatsuBoard/Support/Info.plist
           echo "Share Extension Info.plist build number:"
           /usr/libexec/PlistBuddy -c "Print :CFBundleVersion" ShareExtension/Info.plist
-
-      - name: Generate Xcode project
-        run: xcodegen generate
 
       - name: Install Apple Certificate and Provisioning Profiles
         env:
