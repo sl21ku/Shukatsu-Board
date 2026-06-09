@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>就活ボード - プライバシーポリシー</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --text-color: #1f2937;
+            --bg-color: #f9fafb;
+            --card-bg: #ffffff;
+            --border-color: #e5e7eb;
+            --muted-text: #4b5563;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans JP", sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.7;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.25rem;
+            color: #111827;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--muted-text);
+        }
+
+        .last-updated {
+            font-size: 0.875rem;
+            color: #9ca3af;
+            margin-top: 12px;
+        }
+
+        main {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            color: #111827;
+            border-left: 4px solid var(--primary-color);
+            padding-left: 12px;
+            margin-top: 32px;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        h2:first-of-type {
+            margin-top: 0;
+        }
+
+        p {
+            margin-bottom: 16px;
+        }
+
+        ul {
+            padding-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .alert-box {
+            background-color: #eff6ff;
+            border-left: 4px solid var(--primary-color);
+            padding: 16px 20px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 24px;
+        }
+
+        .alert-box p {
+            margin: 0;
+            color: #1e40af;
+            font-weight: 500;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #9ca3af;
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                margin: 20px auto;
+                padding: 12px;
+            }
+
+            main {
+                padding: 24px;
+                border-radius: 12px;
+            }
+
+            h1 {
+                font-size: 1.75rem;
+            }
+
+            h2 {
+                font-size: 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>就活ボード</h1>
+            <div class="subtitle">プライバシーポリシー</div>
+            <div class="last-updated">発効日: 2026年6月10日</div>
+        </header>
+
+        <main>
+            <div class="alert-box">
+                <p>「就活ボード」は、ユーザーのプライバシーを最優先に考え、すべてのデータを端末内で管理するローカルファースト設計のアプリです。</p>
+            </div>
+
+            <h2>1. アプリが取得・保存するデータ</h2>
+            <p>本アプリは、就職活動における情報を効率的に整理・管理するために、ユーザー自身が直接入力、またはインポートした以下の情報をデバイス本体にのみ保存します。</p>
+            <ul>
+                <li>企業名・業界</li>
+                <li>選考ステータス（志望度・進行状況）</li>
+                <li>企業マイページURL・募集要項URL</li>
+                <li>ログインID（ユーザー名・メールアドレスなど）</li>
+                <li>ES（エントリーシート）の設問および回答内容</li>
+                <li>募集要項の詳細（勤務地、給与、福利厚生など）</li>
+                <li>タスク（イベント名、期限、面接日時など）</li>
+                <li>リマインダー設定</li>
+                <li>メモおよび各種テキストデータ</li>
+            </ul>
+
+            <h2>2. パスワードの安全な取り扱いについて</h2>
+            <p>企業マイページのログインパスワードは、アプリ内データベース（SwiftData等）には一切保存されません。</p>
+            <p>パスワードは、iOSシステムが提供するセキュアな暗号化領域である「キーチェーン（Keychain）」に直接保存されます。また、アプリ内でパスワードを表示またはクリップボードにコピーする際には、Face ID、Touch ID、または端末パスコードによる生体認証・本人確認を毎回必須としています。</p>
+
+            <h2>3. ローカルファースト設計（外部への送信なし）</h2>
+            <p>本アプリで登録された就活情報、ログイン情報、エントリーシートの文章などは、開発者が管理する外部サーバーを含め、いかなる外部サーバーにも送信されません。データは100%ユーザーご自身のiOSデバイス内にのみ格納され、オフラインでも安全に動作します。</p>
+
+            <h2>4. カメラ・写真およびOCR機能について</h2>
+            <p>本アプリは、募集要項やメールなどのスクリーンショット画像からテキストを抽出して自動で情報を取り込むためのOCR機能を提供しています。</p>
+            <p>この画像認識・文字解析処理は、Apple社の提供するローカルのVisionフレームワークを使用し、デバイス内部のみで完結して処理されます。選択された画像データや解析後のテキストデータが外部に送信されることはありません。</p>
+
+            <h2>5. カレンダーおよび通知へのアクセス</h2>
+            <ul>
+                <li><strong>カレンダー連携：</strong> ユーザーの選択により、面接等のタスクをiOS標準のカレンダーアプリに登録するためにアクセス許可を求めます。この権限はイベントの新規作成のみに使用され、ユーザーの既存のカレンダーデータを読み取って外部に送信することはありません。</li>
+                <li><strong>通知：</strong> 選考締切や面接等のリマインダーをプッシュ通知するために権限を求めます。これらの通知スケジュールはすべてデバイス内部（ローカル通知）で処理されます。</li>
+            </ul>
+
+            <h2>6. 共有機能（Share Extension）</h2>
+            <p>Safariやその他のアプリからテキストやURLを本アプリに直接取り込むための共有機能を提供しています。共有されたコンテンツは、一時的にアプリグループの共有コンテナを経由してメインアプリに表示されますが、ユーザーが「保存」ボタンを押して確定するまでデータベースに恒久的に保存されることはありません。</p>
+
+            <h2>7. 情報収集モジュールおよび広告について</h2>
+            <p>本アプリには、第三者が提供する広告配信SDKや行動履歴トラッキングのためのアクセス解析SDK（Analytics等）は一切組み込まれていません。</p>
+
+            <h2>8. データの削除について</h2>
+            <p>すべてのデータはユーザーのデバイス上に保存されているため、アプリ内から該当の企業情報やタスクを削除するか、あるいはアプリ自体をアンインストールすることで、すべての保存データが即座にデバイスから完全に消去されます。</p>
+
+            <h2>9. 本ポリシーの変更</h2>
+            <p>アプリの機能アップデートに伴い、本プライバシーポリシーを変更することがあります。その場合は、本ページの更新日を更新し、アプリ内または配信ストアにてお知らせいたします。</p>
+
+            <h2>10. お問い合わせ先</h2>
+            <p>本アプリにおけるプライバシーの取り扱いに関するご質問、ご意見がございましたら、以下のソースコード公開リポジトリのIssueページよりお問い合わせください。</p>
+            <p><a href="https://github.com/sl21ku/Shukatsu-Board/issues" target="_blank" rel="noopener noreferrer">https://github.com/sl21ku/Shukatsu-Board/issues</a></p>
+        </main>
+
+        <footer>
+            &copy; 2026 sl21ku. All Rights Reserved.
+        </footer>
+    </div>
+</body>
+</html>
