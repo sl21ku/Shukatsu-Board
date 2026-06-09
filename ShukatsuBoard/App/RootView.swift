@@ -13,11 +13,6 @@ struct RootView: View {
                     Label("企業", systemImage: "building.2")
                 }
 
-            QuickAddView()
-                .tabItem {
-                    Label("追加", systemImage: "plus.circle")
-                }
-
             ComparisonView()
                 .tabItem {
                     Label("比較", systemImage: "tablecells")
