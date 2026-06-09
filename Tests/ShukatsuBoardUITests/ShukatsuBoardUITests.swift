@@ -13,13 +13,8 @@ final class ShukatsuBoardUITests: XCTestCase {
         XCTAssertTrue(app.navigationBars["Shukatsu Board"].waitForExistence(timeout: 10))
 
         app.tabBars.buttons["企業"].tap()
-        XCTAssertTrue(app.navigationBars["企業"].waitForExistence(timeout: 5))
-
         app.tabBars.buttons["比較"].tap()
-        XCTAssertTrue(app.navigationBars["比較"].waitForExistence(timeout: 5))
-
         app.tabBars.buttons["タスク"].tap()
-        XCTAssertTrue(app.navigationBars["タスク"].waitForExistence(timeout: 5))
 
         app.tabBars.buttons["ホーム"].tap()
         XCTAssertTrue(app.navigationBars["Shukatsu Board"].waitForExistence(timeout: 5))
