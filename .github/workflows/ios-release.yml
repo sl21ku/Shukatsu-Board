@@ -103,11 +103,11 @@ jobs:
 
       - name: Setup App Store Connect Private Key
         env:
-          ASC_PRIVATE_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY_KEY }}
+          ASC_PRIVATE_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_KEY }}
           KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_KEY_ID }}
         run: |
           mkdir -p ~/private_keys
-          printf "%s" "$ASC_PRIVATE_KEY" | tr -d '\r' > ~/private_keys/AuthKey_$KEY_ID.p8
+          echo -n "$ASC_PRIVATE_KEY_BASE64" | base64 --decode -o ~/private_keys/AuthKey_$KEY_ID.p8
 
       - name: Upload to TestFlight
         env:
