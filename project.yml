@@ -20,6 +20,10 @@ targets:
       properties:
         CFBundleDisplayName: Shukatsu Board
         ITSAppUsesNonExemptEncryption: false
+        NSCalendarsFullAccessUsageDescription: 面接や締切の予定をカレンダーに追加するために使用します。
+        NSCalendarsWriteOnlyAccessUsageDescription: 面接や締切の予定をカレンダーに追加するために使用します。
+        NSCalendarsUsageDescription: 面接や締切の予定をカレンダーに追加するために使用します。
+        NSFaceIDUsageDescription: 保存したマイページのパスワードを表示・コピーする前に本人確認を行います。
         UILaunchScreen:
           UIColorName: LaunchBackground
         UIApplicationSceneManifest:

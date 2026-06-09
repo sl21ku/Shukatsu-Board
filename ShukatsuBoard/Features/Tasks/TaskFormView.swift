@@ -17,6 +17,7 @@ struct TaskFormView: View {
     @State private var hasReminderAt: Bool
     @State private var reminderAt: Date
     @State private var shouldAddToCalendar: Bool
+    @State private var isRequestingCalendarAccess = false
     @State private var isCompleted: Bool
     @State private var note: String
     @State private var errorMessage: String?
@@ -73,7 +74,7 @@ struct TaskFormView: View {
                 }
 
                 Toggle("カレンダーに追加", isOn: $shouldAddToCalendar)
-                    .disabled(!hasDueAt)
+                    .disabled(!hasDueAt || isRequestingCalendarAccess)
             }
 
             Section("メモ") {
@@ -101,6 +102,15 @@ struct TaskFormView: View {
                     save()
                 }
                 .disabled(title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+            }
+        }
+        .onChange(of: shouldAddToCalendar) { _, wantsCalendarEvent in
+            guard wantsCalendarEvent else { return }
+            requestCalendarAccess()
+        }
+        .onChange(of: hasDueAt) { _, hasDueAt in
+            if !hasDueAt {
+                shouldAddToCalendar = false
             }
         }
     }
@@ -151,6 +161,30 @@ struct TaskFormView: View {
                 }
             } catch {
                 await MainActor.run {
+                    errorMessage = error.localizedDescription
+                }
+            }
+        }
+    }
+
+    private func requestCalendarAccess() {
+        isRequestingCalendarAccess = true
+        errorMessage = nil
+
+        Task {
+            do {
+                let granted = try await CalendarService.shared.requestAccess()
+                await MainActor.run {
+                    isRequestingCalendarAccess = false
+                    if !granted {
+                        shouldAddToCalendar = false
+                        errorMessage = CalendarServiceError.accessDenied.localizedDescription
+                    }
+                }
+            } catch {
+                await MainActor.run {
+                    isRequestingCalendarAccess = false
+                    shouldAddToCalendar = false
                     errorMessage = error.localizedDescription
                 }
             }
