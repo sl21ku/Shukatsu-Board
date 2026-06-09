@@ -2,16 +2,26 @@ name: iOS TestFlight Release
 
 on:
   workflow_dispatch:
+  workflow_run:
+    workflows:
+      - iOS CI
+    types:
+      - completed
+    branches:
+      - main
 
 jobs:
   release:
     name: Build and Upload to TestFlight
     runs-on: macos-15
     timeout-minutes: 35
+    if: ${{ github.event_name == 'workflow_dispatch' || (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push') }}
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
 
       - name: Select latest Xcode version
         run: |
@@ -25,7 +35,7 @@ jobs:
 
       - name: Update build number
         run: |
-          sed -i '' 's/CURRENT_PROJECT_VERSION: "1"/CURRENT_PROJECT_VERSION: "${{ github.run_number }}"/g' project.yml
+          sed -i '' -E 's/CURRENT_PROJECT_VERSION: "[^"]+"/CURRENT_PROJECT_VERSION: "${{ github.run_number }}"/g' project.yml
 
       - name: Generate Xcode project
         run: xcodegen generate
