@@ -19,6 +19,7 @@ targets:
       path: ShukatsuBoard/Support/Info.plist
       properties:
         CFBundleDisplayName: Shukatsu Board
+        ITSAppUsesNonExemptEncryption: false
         UILaunchScreen:
           UIColorName: LaunchBackground
         UIApplicationSceneManifest:

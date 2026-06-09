@@ -101,7 +101,7 @@ struct CompanyDetailView: View {
                     }
                 }
 
-                if let myPageUrl = company.myPageUrl, let url = URL(string: myPageUrl) {
+                if let myPageUrl = company.myPageUrl, let url = cleanURL(myPageUrl) {
                     Button {
                         openURL(url)
                     } label: {
@@ -109,7 +109,7 @@ struct CompanyDetailView: View {
                     }
                 }
 
-                if let jobPageUrl = company.jobPageUrl, let url = URL(string: jobPageUrl) {
+                if let jobPageUrl = company.jobPageUrl, let url = cleanURL(jobPageUrl) {
                     Button {
                         openURL(url)
                     } label: {
@@ -127,6 +127,14 @@ struct CompanyDetailView: View {
                 }
             }
         }
+    }
+
+    private func cleanURL(_ urlString: String) -> URL? {
+        var cleanString = urlString.trimmingCharacters(in: .whitespacesAndNewlines)
+        if !cleanString.lowercased().hasPrefix("http://") && !cleanString.lowercased().hasPrefix("https://") {
+            cleanString = "https://" + cleanString
+        }
+        return URL(string: cleanString)
     }
 
     @MainActor
