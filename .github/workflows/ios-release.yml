@@ -107,7 +107,7 @@ jobs:
           KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_KEY_ID }}
         run: |
           mkdir -p ~/private_keys
-          echo "$ASC_PRIVATE_KEY" > ~/private_keys/AuthKey_$KEY_ID.p8
+          printf "%s" "$ASC_PRIVATE_KEY" | tr -d '\r' > ~/private_keys/AuthKey_$KEY_ID.p8
 
       - name: Upload to TestFlight
         env:
@@ -115,7 +115,7 @@ jobs:
           ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
         run: |
           xcrun altool \
-            --upload-package -f $RUNNER_TEMP/export/ShukatsuBoard.ipa \
+            --upload-app -f $RUNNER_TEMP/export/ShukatsuBoard.ipa \
             -t ios \
             --apiKey "$KEY_ID" \
             --apiIssuer "$ISSUER_ID"
