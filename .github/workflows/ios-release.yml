@@ -34,8 +34,11 @@ jobs:
         run: brew install xcodegen
 
       - name: Update build number
+        env:
+          BUILD_NUMBER: ${{ github.run_number }}
         run: |
-          sed -i '' -E 's/CURRENT_PROJECT_VERSION: "[^"]+"/CURRENT_PROJECT_VERSION: "${{ github.run_number }}"/g' project.yml
+          sed -i '' -E "s/CURRENT_PROJECT_VERSION: \"[^\"]+\"/CURRENT_PROJECT_VERSION: \"$BUILD_NUMBER\"/g" project.yml
+          grep 'CURRENT_PROJECT_VERSION' project.yml
 
       - name: Generate Xcode project
         run: xcodegen generate
@@ -84,7 +87,7 @@ jobs:
               <key>destination</key>
               <string>export</string>
               <key>manageAppVersionAndBuildNumber</key>
-              <true/>
+              <false/>
               <key>method</key>
               <string>app-store</string>
               <key>provisioningProfiles</key>
@@ -111,8 +114,17 @@ jobs:
             -scheme ShukatsuBoard \
             -sdk iphoneos \
             -configuration Release \
+            CURRENT_PROJECT_VERSION=${{ github.run_number }} \
             -archivePath $RUNNER_TEMP/ShukatsuBoard.xcarchive \
             archive
+
+      - name: Verify archived build number
+        run: |
+          APP_PLIST="$RUNNER_TEMP/ShukatsuBoard.xcarchive/Products/Applications/ShukatsuBoard.app/Info.plist"
+          echo "Archived marketing version:"
+          /usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "$APP_PLIST"
+          echo "Archived build number:"
+          /usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$APP_PLIST"
 
       - name: Export IPA
         run: |
@@ -121,6 +133,15 @@ jobs:
             -archivePath $RUNNER_TEMP/ShukatsuBoard.xcarchive \
             -exportOptionsPlist ExportOptions.plist \
             -exportPath $RUNNER_TEMP/export
+
+      - name: Verify exported IPA build number
+        run: |
+          unzip -q "$RUNNER_TEMP/export/ShukatsuBoard.ipa" -d "$RUNNER_TEMP/ipa"
+          APP_PLIST="$RUNNER_TEMP/ipa/Payload/ShukatsuBoard.app/Info.plist"
+          echo "Exported marketing version:"
+          /usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "$APP_PLIST"
+          echo "Exported build number:"
+          /usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$APP_PLIST"
 
       - name: Setup App Store Connect Private Key
         env:
