@@ -33,9 +33,13 @@ jobs:
       - name: Install XcodeGen
         run: brew install xcodegen
 
+      - name: Set build number
+        run: |
+          BUILD_NUMBER="$(date -u +%Y%m%d%H%M%S)"
+          echo "BUILD_NUMBER=$BUILD_NUMBER" >> "$GITHUB_ENV"
+          echo "Using build number: $BUILD_NUMBER"
+
       - name: Update build number
-        env:
-          BUILD_NUMBER: ${{ github.run_number }}
         run: |
           sed -i '' -E "s/CURRENT_PROJECT_VERSION: \"[^\"]+\"/CURRENT_PROJECT_VERSION: \"$BUILD_NUMBER\"/g" project.yml
           grep 'CURRENT_PROJECT_VERSION' project.yml
@@ -114,7 +118,7 @@ jobs:
             -scheme ShukatsuBoard \
             -sdk iphoneos \
             -configuration Release \
-            CURRENT_PROJECT_VERSION=${{ github.run_number }} \
+            CURRENT_PROJECT_VERSION=$BUILD_NUMBER \
             -archivePath $RUNNER_TEMP/ShukatsuBoard.xcarchive \
             archive
 
@@ -124,7 +128,9 @@ jobs:
           echo "Archived marketing version:"
           /usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "$APP_PLIST"
           echo "Archived build number:"
-          /usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$APP_PLIST"
+          ARCHIVED_BUILD_NUMBER="$(/usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$APP_PLIST")"
+          echo "$ARCHIVED_BUILD_NUMBER"
+          test "$ARCHIVED_BUILD_NUMBER" = "$BUILD_NUMBER"
 
       - name: Export IPA
         run: |
@@ -141,7 +147,9 @@ jobs:
           echo "Exported marketing version:"
           /usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "$APP_PLIST"
           echo "Exported build number:"
-          /usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$APP_PLIST"
+          EXPORTED_BUILD_NUMBER="$(/usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$APP_PLIST")"
+          echo "$EXPORTED_BUILD_NUMBER"
+          test "$EXPORTED_BUILD_NUMBER" = "$BUILD_NUMBER"
 
       - name: Setup App Store Connect Private Key
         env:
