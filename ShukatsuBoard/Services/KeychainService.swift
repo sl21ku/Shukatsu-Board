@@ -18,7 +18,7 @@ enum KeychainError: LocalizedError {
 struct KeychainService {
     static let shared = KeychainService()
 
-    private let service = "com.example.ShukatsuBoard.passwords"
+    private let service = "com.sl21ku.ShukatsuBoard.passwords"
 
     func savePassword(_ password: String, id: String = UUID().uuidString) throws -> String {
         guard let data = password.data(using: .utf8) else {

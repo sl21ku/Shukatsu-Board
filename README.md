@@ -69,17 +69,6 @@ App Group:
 group.com.sl21ku.ShukatsuBoard
 ```
 
-作成後、`project.yml` とentitlements内の仮IDを置き換えます。
-
-```text
-com.example.ShukatsuBoard
--> com.sl21ku.ShukatsuBoard
-
-com.example.ShukatsuBoard.ShareExtension
--> com.sl21ku.ShukatsuBoard.ShareExtension
-
-group.com.example.ShukatsuBoard
--> group.com.sl21ku.ShukatsuBoard
-```
+`project.yml` とentitlements内の仮ID（`com.example.*`）は本番用のID（`com.sl21ku.*`）に置き換え済みです。
 
 その後、App Store Connectで新規アプリを作成し、Bundle IDに `com.sl21ku.ShukatsuBoard` を選択します。

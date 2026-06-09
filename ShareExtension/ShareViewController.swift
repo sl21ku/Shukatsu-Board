@@ -4,7 +4,7 @@ import UniformTypeIdentifiers
 import UIKit
 
 final class ShareViewController: UIViewController {
-    private let appGroupIdentifier = "group.com.example.ShukatsuBoard"
+    private let appGroupIdentifier = "group.com.sl21ku.ShukatsuBoard"
 
     override func viewDidLoad() {
         super.viewDidLoad()

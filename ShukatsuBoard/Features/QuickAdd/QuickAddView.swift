@@ -214,7 +214,7 @@ struct QuickAddView: View {
     }
 
     private func loadSharedText() {
-        let defaults = UserDefaults(suiteName: "group.com.example.ShukatsuBoard")
+        let defaults = UserDefaults(suiteName: "group.com.sl21ku.ShukatsuBoard")
         guard let payload = defaults?.dictionary(forKey: "latestSharePayload") else {
             alertMessage = "共有データはありません。"
             return
