@@ -5,3 +5,11 @@ DerivedData/
 *.xcodeproj
 *.xcworkspace
 build/
+
+# Signing files
+*.key
+*.csr
+*.cer
+*.p12
+*.pem
+*.mobileprovision
