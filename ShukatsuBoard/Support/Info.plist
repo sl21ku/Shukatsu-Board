@@ -24,6 +24,8 @@
 	<string>保存したマイページのパスワードを表示・コピーする前に本人確認を行います。</string>
 	<key>NSCalendarsFullAccessUsageDescription</key>
 	<string>面接や締切の予定をカレンダーに追加するために使用します。</string>
+	<key>NSCalendarsWriteOnlyAccessUsageDescription</key>
+	<string>面接や締切の予定をカレンダーに追加するために使用します。</string>
 	<key>NSCalendarsUsageDescription</key>
 	<string>面接や締切の予定をカレンダーに追加するために使用します。</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>

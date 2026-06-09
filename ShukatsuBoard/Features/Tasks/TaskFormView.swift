@@ -106,65 +106,49 @@ struct TaskFormView: View {
     }
 
     private func save() {
-        let selectedCompany = fixedCompany ?? companies.first { $0.id == companyId }
-
-        if let task {
-            NotificationService.shared.cancelReminder(for: task)
-            task.title = title
-            task.type = type
-            task.company = selectedCompany
-            task.dueAt = hasDueAt ? dueAt : nil
-            task.reminderAt = hasReminderAt ? reminderAt : nil
-            task.isCompleted = isCompleted
-            task.note = note.nilIfEmpty
-            task.touch()
-            scheduleNotificationIfNeeded(for: task)
-            addToCalendarIfNeeded(task)
-        } else {
-            let newTask = TaskItem(
-                company: selectedCompany,
-                title: title,
-                type: type,
-                dueAt: hasDueAt ? dueAt : nil,
-                reminderAt: hasReminderAt ? reminderAt : nil,
-                isCompleted: isCompleted,
-                note: note.nilIfEmpty
-            )
-            modelContext.insert(newTask)
-            selectedCompany?.touch()
-            scheduleNotificationIfNeeded(for: newTask)
-            addToCalendarIfNeeded(newTask)
-        }
-
-        dismiss()
-    }
-
-    private func scheduleNotificationIfNeeded(for task: TaskItem) {
-        guard !task.isCompleted else {
-            NotificationService.shared.cancelReminder(for: task)
-            return
-        }
-
         Task {
-            do {
-                _ = try await NotificationService.shared.requestAuthorization()
-                try await NotificationService.shared.scheduleReminder(for: task)
-            } catch {
-                await MainActor.run {
-                    errorMessage = error.localizedDescription
-                }
+            let selectedCompany = fixedCompany ?? companies.first { $0.id == companyId }
+            let targetTask: TaskItem
+
+            if let task {
+                NotificationService.shared.cancelReminder(for: task)
+                task.title = title
+                task.type = type
+                task.company = selectedCompany
+                task.dueAt = hasDueAt ? dueAt : nil
+                task.reminderAt = hasReminderAt ? reminderAt : nil
+                task.isCompleted = isCompleted
+                task.note = note.nilIfEmpty
+                task.touch()
+                targetTask = task
+            } else {
+                let newTask = TaskItem(
+                    company: selectedCompany,
+                    title: title,
+                    type: type,
+                    dueAt: hasDueAt ? dueAt : nil,
+                    reminderAt: hasReminderAt ? reminderAt : nil,
+                    isCompleted: isCompleted,
+                    note: note.nilIfEmpty
+                )
+                modelContext.insert(newTask)
+                selectedCompany?.touch()
+                targetTask = newTask
             }
-        }
-    }
 
-    private func addToCalendarIfNeeded(_ task: TaskItem) {
-        guard shouldAddToCalendar else {
-            return
-        }
-
-        Task {
             do {
-                try await CalendarService.shared.addEvent(for: task)
+                if !targetTask.isCompleted {
+                    _ = try await NotificationService.shared.requestAuthorization()
+                    try await NotificationService.shared.scheduleReminder(for: targetTask)
+                }
+
+                if shouldAddToCalendar {
+                    try await CalendarService.shared.addEvent(for: targetTask)
+                }
+
+                await MainActor.run {
+                    dismiss()
+                }
             } catch {
                 await MainActor.run {
                     errorMessage = error.localizedDescription
