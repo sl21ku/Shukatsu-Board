@@ -71,7 +71,7 @@ struct HomeView: View {
                     }
                 }
             }
-            .navigationTitle("Shukatsu Board")
+            .navigationTitle("就活マイページ登録アプリ")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     NavigationLink {

@@ -10,14 +10,14 @@ final class ShukatsuBoardUITests: XCTestCase {
         app.launchEnvironment["UI_TESTING"] = "1"
         app.launch()
 
-        XCTAssertTrue(app.navigationBars["Shukatsu Board"].waitForExistence(timeout: 10))
+        XCTAssertTrue(app.navigationBars["就活マイページ登録アプリ"].waitForExistence(timeout: 10))
 
         app.tabBars.buttons["企業"].tap()
         app.tabBars.buttons["比較"].tap()
         app.tabBars.buttons["タスク"].tap()
 
         app.tabBars.buttons["ホーム"].tap()
-        XCTAssertTrue(app.navigationBars["Shukatsu Board"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.navigationBars["就活マイページ登録アプリ"].waitForExistence(timeout: 5))
         app.buttons["設定"].tap()
         XCTAssertTrue(app.navigationBars["設定"].waitForExistence(timeout: 5))
     }

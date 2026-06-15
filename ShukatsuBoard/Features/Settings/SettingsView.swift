@@ -7,7 +7,7 @@ struct SettingsView: View {
 
     @Query private var companies: [Company]
 
-    @AppStorage("privacyPolicyURL") private var privacyPolicyURL = "https://example.com/privacy"
+    @AppStorage("privacyPolicyURL") private var privacyPolicyURL = "https://sl21ku.github.io/Shukatsu-Board/privacy-policy.html"
     @State private var alertMessage: String?
 
     var body: some View {
