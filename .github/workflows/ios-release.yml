@@ -49,12 +49,19 @@ jobs:
 
       - name: Update generated Info.plist build numbers
         run: |
+          MARKETING_VERSION=$(grep 'MARKETING_VERSION' project.yml | head -n 1 | sed -E 's/.*MARKETING_VERSION: "([^"]+)".*/\1/')
+          echo "Detected Marketing Version: $MARKETING_VERSION"
+          /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $MARKETING_VERSION" ShukatsuBoard/Support/Info.plist
+          /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $MARKETING_VERSION" ShareExtension/Info.plist
           /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $BUILD_NUMBER" ShukatsuBoard/Support/Info.plist
           /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $BUILD_NUMBER" ShareExtension/Info.plist
-          echo "App Info.plist build number:"
+          echo "App Info.plist version and build number:"
+          /usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" ShukatsuBoard/Support/Info.plist
           /usr/libexec/PlistBuddy -c "Print :CFBundleVersion" ShukatsuBoard/Support/Info.plist
-          echo "Share Extension Info.plist build number:"
+          echo "Share Extension Info.plist version and build number:"
+          /usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" ShareExtension/Info.plist
           /usr/libexec/PlistBuddy -c "Print :CFBundleVersion" ShareExtension/Info.plist
+
 
       - name: Install Apple Certificate and Provisioning Profiles
         env:
